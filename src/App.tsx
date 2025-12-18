@@ -1,7 +1,9 @@
+import RouteComponent from "./Routes/Route";
+
 const App = () => {
   return (
     <div>
-      <h1>This is app</h1>
+      <RouteComponent />
     </div>
   );
 };
