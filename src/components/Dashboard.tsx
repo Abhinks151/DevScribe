@@ -1,8 +1,10 @@
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) {
@@ -19,6 +21,18 @@ const Dashboard = () => {
         </div>
         <div className="flex items-center space-x-4">
           <span className="text-gray-300">Welcome, {user?.email}</span>
+          <button
+            onClick={() => navigate("/all")}
+            className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-lg transition"
+          >
+            See all
+          </button>
+          <button
+            onClick={() => navigate("/new")}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition"
+          >
+            New Blog
+          </button>
           <button
             onClick={logout}
             className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition"
