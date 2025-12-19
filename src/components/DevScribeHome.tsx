@@ -2,92 +2,115 @@ import { useNavigate } from "react-router-dom";
 
 export default function DevScribeHome() {
   const navigate = useNavigate();
+  const handleGetStarted = () => {
+    navigate("/login");
+    // console.log('Navigate to /login');
+  };
+
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Navigation */}
       <nav className="container mx-auto px-6 py-6 flex justify-between items-center">
         <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-xl">D</span>
+          </div>
           <span className="text-2xl font-bold text-white">DevScribe</span>
         </div>
-        <div className="hidden md:flex space-x-8 text-gray-300">
-          <a href="#features" className="hover:text-white transition">
-            Features
-          </a>
-          <a href="#about" className="hover:text-white transition">
-            About
-          </a>
-          <a href="#contact" className="hover:text-white transition">
-            Contact
-          </a>
-        </div>
-        <button onClick={()=>{navigate('/login')}} className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition">
+        <button
+          onClick={handleGetStarted}
+          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2.5 rounded-lg transition-colors font-medium"
+        >
           Get Started
         </button>
       </nav>
 
       {/* Hero Section */}
-      <div className="container mx-auto px-6 py-20 text-center">
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-          Document Your Code
-          <span className="block text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-600">
-            Effortlessly
-          </span>
+      <div className="container mx-auto px-6 py-32 text-center">
+        <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+          Share Your Ideas.
+          <br />
+          <span className="text-purple-400">Build Your Blog.</span>
         </h1>
-        <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-          DevScribe helps developers create beautiful, comprehensive
-          documentation for their projects with AI-powered insights and
-          automation.
+
+        <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+          A simple, powerful platform for developers to write, publish, and
+          manage blog posts. Start sharing your thoughts with the world today.
         </p>
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button onClick={()=>{navigate('/login')}} className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition">
-            Start Free Trial
+          <button
+            onClick={handleGetStarted}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors"
+          >
+            Create Your First Post
           </button>
-          <button className="bg-transparent border-2 border-purple-400 hover:bg-purple-400/10 text-purple-400 px-8 py-4 rounded-lg text-lg font-semibold transition">
-            View Demo
+
+          <button
+            onClick={handleGetStarted}
+            className="bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors"
+          >
+            View All Blogs
           </button>
         </div>
       </div>
 
-      {/* Features Section */}
+      {/* Features Grid */}
       <div className="container mx-auto px-6 py-20">
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-8 hover:bg-white/15 transition">
-            <div className="text-4xl mb-6">⚡</div>
-            <h3 className="text-2xl font-bold text-white mb-4">AI-Powered</h3>
-            <p className="text-gray-300">
-              Leverage artificial intelligence to automatically generate
-              documentation from your codebase, saving hours of manual work.
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="bg-slate-800 rounded-xl p-8 border border-slate-700">
+            <div className="text-5xl mb-4">✍️</div>
+            <h3 className="text-xl font-bold text-white mb-3">Write & Edit</h3>
+            <p className="text-gray-400">
+              Create and edit your blog posts with ease. Simple editor to focus
+              on your content.
             </p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-8 hover:bg-white/15 transition">
-            <div className="text-4xl mb-6">💻</div>
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Multi-Language
-            </h3>
-            <p className="text-gray-300">
-              Support for all major programming languages including JavaScript,
-              Python, Java, Go, and many more.
+          <div className="bg-slate-800 rounded-xl p-8 border border-slate-700">
+            <div className="text-5xl mb-4">📚</div>
+            <h3 className="text-xl font-bold text-white mb-3">Manage Posts</h3>
+            <p className="text-gray-400">
+              View, update, or delete your posts anytime. Full control over your
+              content.
             </p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-8 hover:bg-white/15 transition">
-            <div className="text-4xl mb-6">👥</div>
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Team Collaboration
+          <div className="bg-slate-800 rounded-xl p-8 border border-slate-700">
+            <div className="text-5xl mb-4">🔒</div>
+            <h3 className="text-xl font-bold text-white mb-3">
+              Personal Space
             </h3>
-            <p className="text-gray-300">
-              Work together with your team to create, review, and maintain
-              documentation in real-time.
+            <p className="text-gray-400">
+              Each user gets their own dashboard. Your blogs, your way, securely
+              stored.
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="container mx-auto px-6 py-20">
+        <div className="max-w-3xl mx-auto bg-slate-800 border border-slate-700 rounded-2xl p-12 text-center">
+          <h2 className="text-4xl font-bold text-white mb-4">
+            Ready to start writing?
+          </h2>
+          <p className="text-lg text-gray-400 mb-8">
+            Join DevScribe and share your developer journey with the community.
+          </p>
+          <button
+            onClick={handleGetStarted}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
+          >
+            Sign Up Free
+          </button>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="container mx-auto px-6 py-12 border-t border-white/10">
-        <div className="text-center text-gray-400">
-          <p>&copy; 2024 DevScribe. All rights reserved.</p>
+      <footer className="container mx-auto px-6 py-8 border-t border-slate-800">
+        <div className="text-center text-gray-500 text-sm">
+          <p>&copy; 2025 DevScribe. All rights reserved.</p>
         </div>
       </footer>
     </div>

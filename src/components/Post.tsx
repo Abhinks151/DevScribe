@@ -11,16 +11,27 @@ const Post = ({
   const navigate = useNavigate();
 
   return (
-    <div className="mt-4 border p-4">
-      <h3 className="font-bold">{blog.title}</h3>
-      <p>{blog.post}</p>
+    <div className="p-6">
+      <h3 className="text-2xl font-semibold text-white mb-3">
+        {blog.title}
+      </h3>
 
-      <div className="flex gap-2 mt-2">
-        <button onClick={() => navigate(`/edit/${blog.id}`)}>
-          Edit
+      <p className="text-gray-300 text-sm line-clamp-4 mb-6">
+        {blog.post}
+      </p>
+
+      <div className="flex justify-between items-center text-sm">
+        <button
+          onClick={() => navigate(`/edit/${blog.id}`)}
+          className="text-blue-400 hover:text-blue-300 transition"
+        >
+          Edit →
         </button>
 
-        <button onClick={() => onDelete(blog.id)}>
+        <button
+          onClick={() => onDelete(blog.id)}
+          className="text-red-400 hover:text-red-300 transition"
+        >
           Delete
         </button>
       </div>

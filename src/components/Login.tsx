@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { login } from "../firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { login } from "../firebase/auth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -9,52 +9,82 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    console.log("Login:", { email, password });
     await login(email, password);
   };
 
+  const handleNavigateToRegister = () => {
+    navigate("/register");
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
-
-        <div className="space-y-4">
-          <div>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
+      <div className="w-full max-w-md px-6">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center space-x-2 mb-4">
+            <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-xl">D</span>
+            </div>
+            <span className="text-3xl font-bold text-white">DevScribe</span>
           </div>
-
-          <div>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <button
-            onClick={handleLogin}
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-          >
-            Login
-          </button>
+          <p className="text-gray-400">Welcome back! Sign in to your account</p>
         </div>
 
-        <p className="text-center text-sm text-gray-600 mt-4">
-          Don't have an account?{" "}
-          <button
-            onClick={() => navigate("/register")}
-            className="text-blue-500 hover:underline"
-          >
-            Register
-          </button>
+        {/* Login Card */}
+        <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 shadow-xl">
+          <h2 className="text-2xl font-bold text-white mb-6">Login</h2>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+              />
+            </div>
+
+            <button
+              onClick={handleLogin}
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors mt-6"
+            >
+              Sign In
+            </button>
+          </div>
+
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-400">
+              Don't have an account?{" "}
+              <button
+                onClick={handleNavigateToRegister}
+                className="text-purple-400 hover:text-purple-300 font-medium transition-colors"
+              >
+                Create one
+              </button>
+            </p>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <p className="text-center text-gray-500 text-sm mt-8">
+          &copy; 2025 DevScribe. All rights reserved.
         </p>
       </div>
     </div>

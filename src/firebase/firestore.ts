@@ -30,10 +30,7 @@ export const addBlogPost = async (
 };
 
 export const getBlogsPerUser = async (userId: string) => {
-  const q = query(
-    collection(db, "blogs"),
-    where("userId", "==", userId)
-  );
+  const q = query(collection(db, "blogs"), where("userId", "==", userId));
 
   const snapshot = await getDocs(q);
 
@@ -47,8 +44,6 @@ export const deleteBlogPost = async (id: string) => {
   return deleteDoc(doc(db, "blogs", id));
 };
 
-
-
 export const updateBlogPost = async (
   id: string,
   title: string,
@@ -61,9 +56,6 @@ export const updateBlogPost = async (
     post,
   });
 };
-
-
-
 
 export const getOneBlogPost = async (id: string): Promise<Blog | null> => {
   const snap = await getDoc(doc(db, "blogs", id));
@@ -82,3 +74,15 @@ export const getOneBlogPost = async (id: string): Promise<Blog | null> => {
     createdAt: data.createdAt,
   };
 };
+
+// export const getAllBlogPosts = async (): Promise<Blog[]> => {
+//   const q = query(collection(db, "blogs"));
+
+//   const snapshot = await getDocs(q);
+
+//   return snapshot.docs.map((doc) => ({
+//     id: doc.id,
+//     ...doc.data(),
+//   })) as Blog[];
+// };
+
