@@ -1,16 +1,41 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../firebase/auth";
+import authSchema from "../validators/authValidator";
+import Error from "./Error";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
+  const [formError, setFormError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleRegister = async () => {
-    console.log("Register:", { email, password });
-    await register(email, password);
-    navigate("/login", { replace: true });
+    // console.log("Register:", { email, password });
+
+    const result = authSchema.safeParse({ email, password });
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      setErrors({
+        email: fieldErrors.email?.[0],
+        password: fieldErrors.password?.[0],
+      });
+      return;
+    }
+
+    setErrors({});
+
+    try {
+      await register(result.data.email, result.data.password);
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.log(error);
+      setFormError("Something went wrong");
+    }
   };
 
   const handleNavigateToLogin = () => {
@@ -33,7 +58,7 @@ export default function Register() {
 
         {/* Register Card */}
         <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 shadow-xl">
-          <h2 className="text-2xl font-bold text-white mb-6">Create Account</h2>
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">Create Account</h2>
 
           <div className="space-y-4">
             <div>
@@ -61,6 +86,9 @@ export default function Register() {
                 className="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
               />
             </div>
+            <Error message={errors.email} />
+            <Error message={errors.password} />
+            <Error message={formError} />
 
             <button
               onClick={handleRegister}
@@ -85,7 +113,7 @@ export default function Register() {
 
         {/* Footer */}
         <p className="text-center text-gray-500 text-sm mt-8">
-          &copy; 2025 DevScribe. All rights reserved.
+          &copy; 2026 DevScribe. All rights reserved.
         </p>
       </div>
     </div>

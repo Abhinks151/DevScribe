@@ -1,15 +1,60 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../firebase/auth";
+import authSchema from "../validators/authValidator";
+import Error from "./Error";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
+  const [formError, setFormError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    await login(email, password);
+    const result = authSchema.safeParse({ email, password });
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      setErrors({
+        email: fieldErrors.email?.[0],
+        password: fieldErrors.password?.[0],
+      });
+      return;
+    }
+
+    setErrors({});
+
+    try {
+      setFormError(null);
+      await login(result.data.email, result.data.password);
+    } catch (error: unknown) {
+      const errorCode = (error as { code?: string }).code;
+
+      switch (errorCode) {
+        case "auth/user-not-found":
+          setFormError("No account found with this email.");
+          break;
+
+        case "auth/wrong-password":
+          setFormError("Incorrect password.");
+          break;
+
+        case "auth/invalid-credential":
+          setFormError("Invalid email or password.");
+          break;
+
+        case "auth/too-many-requests":
+          setFormError("Too many attempts. Try again later.");
+          break;
+
+        default:
+          setFormError("Something went wrong. Please try again.");
+      }
+    }
   };
 
   const handleNavigateToRegister = () => {
@@ -32,7 +77,9 @@ export default function Login() {
 
         {/* Login Card */}
         <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 shadow-xl">
-          <h2 className="text-2xl font-bold text-white mb-6">Login</h2>
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">
+            Login
+          </h2>
 
           <div className="space-y-4">
             <div>
@@ -60,6 +107,9 @@ export default function Login() {
                 className="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
               />
             </div>
+            <Error message={errors.email} />
+            <Error message={errors.password} />
+            <Error message={formError} />
 
             <button
               onClick={handleLogin}
@@ -84,7 +134,7 @@ export default function Login() {
 
         {/* Footer */}
         <p className="text-center text-gray-500 text-sm mt-8">
-          &copy; 2025 DevScribe. All rights reserved.
+          &copy; 2026 DevScribe. All rights reserved.
         </p>
       </div>
     </div>

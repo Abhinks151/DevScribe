@@ -4,10 +4,12 @@ import type { Blog } from "../types/blog.type";
 import { useAuth } from "../hooks/useAuth";
 import { useEffect, useState } from "react";
 import Post from "./Post";
+import Loading from "./Loader";
+// import Navbar from "./Navbar";
 
 const BlogList = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,37 +38,7 @@ const BlogList = () => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
-      {/* Navbar — SAME AS DASHBOARD */}
-      <nav className="border-b border-white/10 backdrop-blur">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <h1
-            onClick={() => navigate("/home")}
-            className="text-2xl font-bold tracking-wide cursor-pointer"
-          >
-            DevScribe
-          </h1>
 
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-300">{user?.email}</span>
-
-            <button
-              onClick={() => navigate("/new")}
-              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition"
-            >
-              + New Blog
-            </button>
-
-            <button
-              onClick={logout}
-              className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main */}
       <main className="container mx-auto px-6 py-16">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12">
@@ -85,9 +57,9 @@ const BlogList = () => {
           </button>
         </div>
 
-        {/* Content */}
+        {/* States */}
         {loading && (
-          <p className="text-gray-300 text-lg">Loading blogs...</p>
+          <Loading/>
         )}
 
         {!loading && blogs.length === 0 && (

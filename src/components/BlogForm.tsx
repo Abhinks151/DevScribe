@@ -6,17 +6,23 @@ import {
   getOneBlogPost,
   updateBlogPost,
 } from "../firebase/firestore";
+// import Navbar from "./Navbar";
+import blogSchema from "../validators/blogValidator";
+import Error from "./Error";
 
 const BlogForm = () => {
   const [title, setTitle] = useState<string | undefined>("");
   const [content, setContent] = useState<string | undefined>("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{ title?: string; content?: string }>(
+    {}
+  );
 
   const { id } = useParams();
   const isEdit = Boolean(id);
 
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!isEdit || !id) return;
@@ -36,11 +42,21 @@ const BlogForm = () => {
 
   const handleBlog = async () => {
     if (!user) return;
+
+    const result = blogSchema.safeParse({ title, content });
+    if (!result.success) {
+      const fieldError = result.error.flatten().fieldErrors;
+      setErrors({
+        title: fieldError.title?.[0],
+        content: fieldError.content?.[0],
+      });
+      return;
+    }
+
+    setErrors({});
+    if (!user) return;
     if (!title) return;
     if (!content) return;
-
-    if (!user || !title.trim() || !content.trim()) return;
-
     setLoading(true);
 
     if (isEdit && id) {
@@ -49,32 +65,12 @@ const BlogForm = () => {
       await addBlogPost(user.uid, title, content);
     }
 
-    navigate("/all");
+    navigate("/home");
   };
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
-      {/* Navbar */}
-      <nav className="border-b border-white/10 backdrop-blur">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <h1
-            onClick={() => navigate("/home")}
-            className="text-2xl font-bold tracking-wide cursor-pointer"
-          >
-            DevScribe
-          </h1>
-
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-300">{user?.email}</span>
-            <button
-              onClick={logout}
-              className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
+      {/* <Navbar /> */}
 
       {/* Main */}
       <main className="container mx-auto px-6 py-16">
@@ -120,6 +116,8 @@ const BlogForm = () => {
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white h-56 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
+              <Error message={errors.title} />
+              <Error message={errors.content} />
 
               {/* Actions */}
               <div className="flex justify-between items-center">

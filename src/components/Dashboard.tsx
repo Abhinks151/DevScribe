@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import type { Blog } from "../types/blog.type";
 import { deleteBlogPost, getBlogsPerUser } from "../firebase/firestore";
 import Post from "./Post";
+// import Navbar from "./Navbar";
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
+
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,22 +39,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
-      {/* Navbar */}
-      <nav className="border-b border-white/10 backdrop-blur">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold tracking-wide">DevScribe</h1>
-
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-300">{user?.email}</span>
-            <button
-              onClick={logout}
-              className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
+      {/* <Navbar /> */}
 
       <main className="container mx-auto px-6 py-16">
         {/* Header */}
@@ -64,12 +51,7 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <button
-            onClick={() => navigate("/new")}
-            className="mt-6 md:mt-0 px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl text-lg transition"
-          >
-            Create New Article
-          </button>
+         
         </div>
 
         {loading && (

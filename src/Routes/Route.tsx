@@ -8,10 +8,12 @@ const BlogForm = lazy(() => import("../components/BlogForm"));
 const BlogList = lazy(() => import("../components/BlogList"));
 import ProtectedRoute from "../components/ProtectedRoute";
 import PublicRoute from "../components/PublicRoute";
+import AppLayout from "../layouts/AppLayout";
+import Loading from "../components/Loader";
 
 const RouteComponent = () => {
   return (
-    <Suspense fallback={<div>Loading page...</div>}>
+    <Suspense fallback={<Loading/>}>
       <Routes>
         <Route path="/" element={<DevScribeHome />} />
 
@@ -34,40 +36,20 @@ const RouteComponent = () => {
         />
 
         <Route
-          path="/home"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <AppLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route path="/home" element={<Dashboard />} />
 
-        <Route
-          path="/new"
-          element={
-            <ProtectedRoute>
-              <BlogForm />
-            </ProtectedRoute>
-          }
-        />
+          <Route path="/new" element={<BlogForm />} />
 
-        <Route
-          path="/all"
-          element={
-            <ProtectedRoute>
-              <BlogList />
-            </ProtectedRoute>
-          }
-        />
+          <Route path="/all" element={<BlogList />} />
 
-        <Route
-          path="/edit/:id"
-          element={
-            <ProtectedRoute>
-              <BlogForm />
-            </ProtectedRoute>
-          }
-        />
+          <Route path="/edit/:id" element={<BlogForm />} />
+        </Route>
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
